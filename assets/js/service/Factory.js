@@ -3,7 +3,7 @@
  */
 
 
-autoApp.service('Factory', function($http, $q) {
+autoApp.service('Factory', ['$http','$q', function($http, $q) {
   return {
     'getStatusForDriver': function(input) {
       var defer = $q.defer();
@@ -43,4 +43,5 @@ autoApp.service('Factory', function($http, $q) {
       });
       return defer.promise;
     }
-  }});
+  }
+}]);
