@@ -159,4 +159,62 @@ module.exports = {
     }
 
   },
+
+  getAllRequests: function(input, cb) {
+
+    async.waterfall([
+        getAllRequests,
+      ],
+      function (err, result) {
+        if(!_.isEmpty(err)) return cb(err);
+        return cb(null, result);
+      }
+    );
+
+    function getAllRequests(callback) {
+      Request.find({}).exec(function (err, request) {
+        if(!_.isEmpty(err)) return callback(err);
+        return callback(null, request);
+      })
+    }
+
+  },
+
+  completeRequests: function(input, cb) {
+
+    async.waterfall([
+        fetchRequest,
+        completeRequests
+      ],
+      function (err, result) {
+        if(!_.isEmpty(err)) return cb(err);
+        return cb(null, result);
+      }
+    );
+
+    function fetchRequest(callback) {
+      Request.find({
+        where: {
+          status: 'ongoing',
+          time_started: {'<': moment().add(5,'mins').format("YYYY-MM-DD HH:mm:ss")}
+        },
+        select: ['id']
+      }).exec(function (err, requests) {
+        if(!_.isEmpty(err)) return callback(err);
+        if(_.isEmpty(requests)) return callback("No request to complete");
+        return callback(null, requests);
+      })
+    }
+
+    function completeRequests(requests, callback) {
+      Request.update({id: _.map(requests, 'id')}, {
+        status: 'complete',
+        time_ended: moment().format("YYYY-MM-DD HH:mm:ss")
+      }).exec(function (err, response) {
+        if(!_.isEmpty(err) || _.isEmpty(response)) return callback(err);
+        return callback(null, _.size(requests).toString() + " Requests completed");
+      })
+    }
+
+  },
 };
