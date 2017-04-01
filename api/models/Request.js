@@ -137,6 +137,7 @@ module.exports = {
     }
 
     async.waterfall([
+        sanitationChecks,
         getRequests,
         formatResponse
       ],
@@ -145,6 +146,11 @@ module.exports = {
         return cb(null, result);
       }
     );
+
+    function sanitationChecks(callback) {
+      if(input.driver_id > 5) return callback("Driver does not exist");
+      return callback();
+    }
 
     function getRequests(callback) {
       var requestObj = {
@@ -161,7 +167,6 @@ module.exports = {
 
     function formatResponse(requests, callback) {
       var formattedRequests = _.groupBy(requests, 'status');
-      console.log(formattedRequests);
       return callback(null, formattedRequests);
     }
 

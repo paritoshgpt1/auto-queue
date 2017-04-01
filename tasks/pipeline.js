@@ -31,6 +31,7 @@ var jsFilesToInject = [
   'js/dependencies/jquery.js',
   'js/dependencies/angular.js',
   'js/dependencies/angular-route.js',
+  'js/dependencies/moment.min.js',
 
   // Dependencies like jQuery, or Angular are brought in here
   'js/dependencies/**/*.js',

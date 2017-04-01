@@ -10,49 +10,37 @@ module.exports = {
 
   createRequest: function (req, res) {
     Request.createRequest(req.params.all(), function(err, result){
-      if(!_.isEmpty(err)) return res.badRequest(err);
-      return res.ok(result);
+      if(!_.isEmpty(err)) return res.ok({status: 'fail', data: err});
+      return res.ok({status: 'success', data: result});
     });
   },
 
   acceptRequest: function (req, res) {
     Request.acceptRequest(req.params.all(), function(err, result){
-      if(!_.isEmpty(err)) return res.badRequest(err);
-      return res.ok(result);
+      if(!_.isEmpty(err)) return res.ok({status: 'fail', data: err});
+      return res.ok({status: 'success', data: result});
     });
   },
 
   getStatusForDriver: function (req, res) {
     Request.getStatusForDriver(req.params.all(), function(err, result){
-      if(!_.isEmpty(err)) return res.badRequest(err);
-      return res.ok(result);
+      if(!_.isEmpty(err)) return res.ok({status: 'fail', data: err});
+      return res.ok({status: 'success', data: result});
     });
   },
 
   getAllRequests: function (req, res) {
     Request.getAllRequests(req.params.all(), function(err, result){
-      if(!_.isEmpty(err)) return res.badRequest(err);
-      return res.ok(result);
+      if(!_.isEmpty(err)) return res.ok({status: 'fail', data: err});
+      return res.ok({status: 'success', data: result});
     });
   },
 
   completeRequests: function (req, res) {
     Request.completeRequests(req.params.all(), function(err, result){
-      if(!_.isEmpty(err)) return res.badRequest(err);
-      return res.ok(result);
+      if(!_.isEmpty(err)) return res.ok({status: 'fail', data: err});
+      return res.ok({status: 'success', data: result});
     });
   },
-
-  driverapp: function (req, res) {
-    var params = req.params.all();
-    Request.getStatusForDriver({driver_id: params.id}, function(err, response){
-      console.log(err);
-      console.log(response);
-      return res.view('driverapp', {
-        error: err,
-        response: response
-      });
-    });
-  }
 
 };

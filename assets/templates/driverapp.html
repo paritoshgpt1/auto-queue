@@ -9,13 +9,16 @@
   <div class="col-md-3 col-md-offset-1 text-center">
     <button style="margin-top: 15px" class="btn btn-sm btn-info" ng-click="refresh()">REFRESH</button>
   </div>
+  <div ng-include src="'/templates/message.html'"></div>
   <div class="col-md-12">
     <div class="col-md-4">
       <h5>Waiting</h5>
       <hr>
       <div ng-if="waiting" ng-repeat="wreq in waiting">
-        <span>Request Id: {{wreq.id}}</span>
-        <button style="margin-left: 15px" class="btn btn-sm btn-success" ng-click="acceptRequest(wreq.id)">Select</button>
+        <div>Request Id: {{wreq.id}}</div>
+        <div>Customer Id: {{wreq.user_id}}</div>
+        <div>{{getElapsedTime(wreq.createdAt)}}</div>
+        <button class="btn btn-sm btn-success" ng-click="acceptRequest(wreq.id)">Select</button>
         <hr>
       </div>
       <div ng-if="!waiting">
@@ -26,7 +29,10 @@
       <h5>Ongoing</h5>
       <hr>
       <div ng-if="ongoing" ng-repeat="oreq in ongoing">
-        Request Id: {{oreq.id}}
+        <div>Request Id: {{oreq.id}}</div>
+        <div>Customer Id: {{oreq.user_id}}</div>
+        <div>Request: {{getElapsedTime(oreq.createdAt)}} ago</div>
+        <div>Pickup: {{getElapsedTime(oreq.time_started)}} ago</div>
         <hr>
       </div>
       <div ng-if="!ongoing">
@@ -37,7 +43,11 @@
       <h5>Completed</h5>
       <hr>
       <div ng-if="completed" ng-repeat="creq in completed">
-        Request Id: {{creq.id}}
+        <div>Request Id: {{creq.id}}</div>
+        <div>Customer Id: {{creq.user_id}}</div>
+        <div>Request: {{getElapsedTime(creq.createdAt)}} ago</div>
+        <div>Pickup: {{getElapsedTime(creq.time_started)}} ago</div>
+        <div>Completed: {{getElapsedTime(creq.time_ended)}} ago</div>
         <hr>
       </div>
       <div ng-if="!completed">

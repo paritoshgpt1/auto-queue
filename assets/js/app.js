@@ -6,6 +6,12 @@ autoApp.config(['$routeProvider', '$locationProvider',
     $routeProvider.when('/driverapp', {
       templateUrl: '/templates/driverapp.html',
       controller: 'DriverCtrl'
+    }).when('/customerapp', {
+      templateUrl: '/templates/customerapp.html',
+      controller: 'CustomerCtrl'
+    }).when('/dashboard', {
+      templateUrl: '/templates/dashboard.html',
+      controller: 'DashboardCtrl'
     }).otherwise({
       redirectTo: '/',
       caseInsensitiveMatch: true

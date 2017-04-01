@@ -56,4 +56,12 @@ module.exports.routes = {
     view: 'layout'
   },
 
+  '/customerapp': {
+    view: 'layout'
+  },
+
+  '/dashboard': {
+    view: 'layout'
+  }
+
 };

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Driver App</title>
+</head>
+<body>
+  <div class="col-md-12 text-center">
+    <button style="margin-top: 15px" class="btn btn-sm btn-info" ng-click="refresh()">REFRESH</button>
+  </div>
+  <div ng-include src="'/templates/message.html'"></div>
+  <table class="table table-responsive table-striped">
+    <thead>
+      <th>Request Id</th>
+      <th>Customer Id</th>
+      <th>Time Elapsed</th>
+      <th>Status</th>
+      <th>Driver Id</th>
+    </thead>
+    <tbody>
+      <tr ng-repeat="req in requests">
+        <td>{{req.id}}</td>
+        <td>{{req.user_id}}</td>
+        <td>{{getElapsedTime(req.time_started)}}</td>
+        <td>{{req.status}}</td>
+        <td>{{req.driver_id}}</td>
+      </tr>
+    </tbody>
+  </table>
+
+
+  </div>
+</body>
+</html>
