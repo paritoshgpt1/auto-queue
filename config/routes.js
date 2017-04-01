@@ -48,6 +48,7 @@ module.exports.routes = {
 
   'post /create-request' : 'RequestController.createRequest',
   'post /accept-request' : 'RequestController.acceptRequest',
+  'post /get-status-for-driver' : 'RequestController.getStatusForDriver',
   
   
 };

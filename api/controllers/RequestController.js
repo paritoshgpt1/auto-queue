@@ -22,4 +22,11 @@ module.exports = {
     });
   },
 
+  getStatusForDriver: function (req, res) {
+    Request.getStatusForDriver(req.params.all(), function(err, result){
+      if(!_.isNull(err)) return res.badRequest(err);
+      return res.ok(result);
+    });
+  },
+
 };

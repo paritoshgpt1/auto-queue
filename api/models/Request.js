@@ -90,7 +90,7 @@ module.exports = {
     async.waterfall([
         checkExistingRequest,
         checkRequestStatus,
-        aceeptRequest
+        acceptRequest
       ],
       function (err, result) {
         if(!_.isEmpty(err)) return cb(err);
@@ -101,8 +101,6 @@ module.exports = {
     function checkExistingRequest(callback) {
       Request.find({driver_id: input.driver_id, status: 'ongoing'}).exec(function (err, request) {
         if(!_.isEmpty(err)) return callback(err);
-        console.log(request);
-        console.log(!_.isEmpty(request));
         if(!_.isEmpty(request)) return callback("Please complete existing request first");
         return callback();
       })
@@ -117,7 +115,7 @@ module.exports = {
       })
     }
 
-    function aceeptRequest(callback) {
+    function acceptRequest(callback) {
       Request.update({id: input.request_id}, {
         driver_id: input.driver_id,
         status: 'ongoing',
@@ -125,6 +123,38 @@ module.exports = {
       ).exec(function (err, request) {
         if(!_.isEmpty(err) || _.isEmpty(request)) return callback(err);
         return callback(null, "Request Assigned");
+      })
+    }
+
+  },
+
+  getStatusForDriver: function(input, cb) {
+
+    var mandatoryParams = ['driver_id'];
+    var mandatoryParamsResponse = Utils.checkMandatoryParams(mandatoryParams, input);
+    if(mandatoryParamsResponse) {
+      return cb(mandatoryParamsResponse + " is missing. Mandatory params are: "+mandatoryParams);
+    }
+
+    async.waterfall([
+        getRequests,
+      ],
+      function (err, result) {
+        if(!_.isEmpty(err)) return cb(err);
+        return cb(null, result);
+      }
+    );
+
+    function getRequests(callback) {
+      var requestObj = {
+        or: [
+          { driver_id: input.driver_id },
+          { status: "waiting" }
+        ]
+      };
+      Request.find(requestObj).exec(function (err, request) {
+        if(!_.isEmpty(err)) return callback(err);
+        return callback(null, request);
       })
     }
 
