@@ -28,8 +28,12 @@ module.exports.connections = {
   * Installed by default.                                                    *
   *                                                                          *
   ***************************************************************************/
-  localDiskDb: {
-    adapter: 'sails-disk'
+  autoqueue: {
+    adapter: 'sails-mysql',
+    host: 'localhost',
+    user: 'hodor',
+    password: 'butterchicken',
+    database: 'autoqueue'
   },
 
   /***************************************************************************
