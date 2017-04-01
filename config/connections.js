@@ -28,12 +28,20 @@ module.exports.connections = {
   * Installed by default.                                                    *
   *                                                                          *
   ***************************************************************************/
+  // autoqueue: {
+  //   adapter: 'sails-mysql',
+  //   host: 'localhost',
+  //   user: 'hodor',
+  //   password: 'butterchicken',
+  //   database: 'autoqueue'
+  // },
+
   autoqueue: {
     adapter: 'sails-mysql',
-    host: 'localhost',
-    user: 'hodor',
-    password: 'butterchicken',
-    database: 'autoqueue'
+    host: 'us-cdbr-iron-east-03.cleardb.net',
+    user: 'b509d6942871c3',
+    password: 'e70322e0',
+    database: 'heroku_19f152cd94a8b72'
   },
 
   /***************************************************************************
