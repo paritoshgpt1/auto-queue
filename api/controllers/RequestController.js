@@ -8,4 +8,18 @@
 
 module.exports = {
 
+  createRequest: function (req, res) {
+    Request.createRequest(req.params.all(), function(err, result){
+      if(!_.isNull(err)) return res.badRequest(err);
+      return res.ok(result);
+    });
+  },
+
+  acceptRequest: function (req, res) {
+    Request.acceptRequest(req.params.all(), function(err, result){
+      if(!_.isNull(err)) return res.badRequest(err);
+      return res.ok(result);
+    });
+  },
+
 };
