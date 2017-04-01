@@ -138,6 +138,7 @@ module.exports = {
 
     async.waterfall([
         getRequests,
+        formatResponse
       ],
       function (err, result) {
         if(!_.isEmpty(err)) return cb(err);
@@ -156,6 +157,12 @@ module.exports = {
         if(!_.isEmpty(err)) return callback(err);
         return callback(null, request);
       })
+    }
+
+    function formatResponse(requests, callback) {
+      var formattedRequests = _.groupBy(requests, 'status');
+      console.log(formattedRequests);
+      return callback(null, formattedRequests);
     }
 
   },

@@ -32,10 +32,6 @@ module.exports.routes = {
   *                                                                          *
   ***************************************************************************/
 
-  // '/': {
-  //   view: 'homepage'
-  // }
-
   /***************************************************************************
   *                                                                          *
   * Custom routes here...                                                    *
@@ -52,5 +48,12 @@ module.exports.routes = {
   'get /get-all-requests' : 'RequestController.getAllRequests',
   'get /complete-requests' : 'RequestController.completeRequests',
 
+  '/': {
+    view: 'layout'
+  },
+
+  '/driverapp': {
+    view: 'layout'
+  },
 
 };

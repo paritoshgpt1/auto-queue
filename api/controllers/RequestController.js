@@ -43,4 +43,16 @@ module.exports = {
     });
   },
 
+  driverapp: function (req, res) {
+    var params = req.params.all();
+    Request.getStatusForDriver({driver_id: params.id}, function(err, response){
+      console.log(err);
+      console.log(response);
+      return res.view('driverapp', {
+        error: err,
+        response: response
+      });
+    });
+  }
+
 };

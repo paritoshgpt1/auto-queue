@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Driver App</title>
+</head>
+<body>
+  <div class="col-md-7 text-right"><h3>Hi Driver (Id: {{driver_id}})</h3></div>
+  <div class="col-md-3 col-md-offset-1 text-center">
+    <button style="margin-top: 15px" class="btn btn-sm btn-info" ng-click="refresh()">REFRESH</button>
+  </div>
+  <div class="col-md-12">
+    <div class="col-md-4">
+      <h5>Waiting</h5>
+      <hr>
+      <div ng-if="waiting" ng-repeat="wreq in waiting">
+        <span>Request Id: {{wreq.id}}</span>
+        <button style="margin-left: 15px" class="btn btn-sm btn-success" ng-click="acceptRequest(wreq.id)">Select</button>
+        <hr>
+      </div>
+      <div ng-if="!waiting">
+        No Waiting Requests
+      </div>
+    </div>
+    <div class="col-md-4">
+      <h5>Ongoing</h5>
+      <hr>
+      <div ng-if="ongoing" ng-repeat="oreq in ongoing">
+        Request Id: {{oreq.id}}
+        <hr>
+      </div>
+      <div ng-if="!ongoing">
+        No Ongoing Requests
+      </div>
+    </div>
+    <div class="col-md-4">
+      <h5>Completed</h5>
+      <hr>
+      <div ng-if="completed" ng-repeat="creq in completed">
+        Request Id: {{creq.id}}
+        <hr>
+      </div>
+      <div ng-if="!completed">
+        No Completed Requests
+      </div>
+    </div>
+  </div>
+
+
+  </div>
+</body>
+</html>
