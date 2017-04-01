@@ -12,6 +12,8 @@ autoApp.config(['$routeProvider', '$locationProvider',
     }).when('/dashboard', {
       templateUrl: '/templates/dashboard.html',
       controller: 'DashboardCtrl'
+    }).when('/dashboard', {
+      templateUrl: '/ATriggerVerify.txt'
     }).otherwise({
       redirectTo: '/',
       caseInsensitiveMatch: true

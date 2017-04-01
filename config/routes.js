@@ -48,10 +48,6 @@ module.exports.routes = {
   'get /get-all-requests' : 'RequestController.getAllRequests',
   'get /complete-requests' : 'RequestController.completeRequests',
 
-  '/': {
-    view: 'layout'
-  },
-
   '/driverapp': {
     view: 'layout'
   },
@@ -62,6 +58,10 @@ module.exports.routes = {
 
   '/dashboard': {
     view: 'layout'
-  }
+  },
+
+  '/': {
+    view: 'layout'
+  },
 
 };
