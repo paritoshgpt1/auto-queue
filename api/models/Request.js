@@ -252,7 +252,7 @@ module.exports = {
       Request.find({
         where: {
           status: 'ongoing',
-          time_started: {'<': moment().sub(sails.config.params.timeToCompleteARide,'m').format("YYYY-MM-DD HH:mm:ss")}
+          time_started: {'<=': moment().subtract(sails.config.params.timeToCompleteARide,'m').format("YYYY-MM-DD HH:mm:ss")}
         },
         select: ['id']
       }).exec(function (err, requests) {
