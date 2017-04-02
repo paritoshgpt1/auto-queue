@@ -35,13 +35,12 @@ autoApp.service('Factory', ['$http','$q', function($http, $q) {
     'createRequest': function(input) {
       var defer = $q.defer();
       $http.post('/create-request', input).success(function(resp){
-        console.log(resp);
         defer.resolve(resp);
       }).error( function(err) {
-        console.log(err);
         defer.reject(err);
       });
       return defer.promise;
-    }
+    },
+
   }
 }]);

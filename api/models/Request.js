@@ -32,11 +32,11 @@ module.exports = {
     time_ended : {
       type: 'datetime'
     },
-    latitude : {
-      type: 'float'
+    x : {
+      type: 'integer'
     },
-    longitude : {
-      type: 'float'
+    y : {
+      type: 'integer'
     },
     createdAt : {
       type: 'datetime',
@@ -50,15 +50,17 @@ module.exports = {
 
   createRequest: function(input, cb) {
 
-    var mandatoryParams = ['user_id'];
+    var mandatoryParams = ['user_id','x','y'];
     var mandatoryParamsResponse = Utils.checkMandatoryParams(mandatoryParams, input);
     if(mandatoryParamsResponse) {
       return cb(mandatoryParamsResponse + " is missing. Mandatory params are: "+mandatoryParams);
     }
 
     async.waterfall([
+        sanitationChecks,
         createRequestForUser,
-
+        findClosestDriver,
+        createMappings
       ],
       function (err, result) {
         if(!_.isEmpty(err)) return cb(err);
@@ -66,14 +68,55 @@ module.exports = {
       }
     );
 
+    function sanitationChecks(callback) {
+      Request.find({status: 'waiting'}).exec(function (err, requests) {
+        if(!_.isEmpty(err)) return callback(err);
+        if(_.size(requests) >= sails.config.params.rideThreshold) {
+          return callback("Rides not available. Try again later");
+        }
+        return callback();
+      })
+    }
+
     function createRequestForUser(callback) {
       var requestObj = {
         user_id: input.user_id,
-        status: 'waiting'
+        status: 'waiting',
+        x: input.x,
+        y: input.y
       };
       Request.create(requestObj).exec(function (err, request) {
         if(!_.isEmpty(err) || _.isEmpty(request)) return callback(err);
-        return callback(null, "Request Created");
+        return callback(null, request);
+      })
+    }
+
+    function findClosestDriver(request, callback) {
+      var driverPositions = sails.config.params['driverPositions'];
+      var requestMapping= [];
+      for(var driver_id in driverPositions){
+        var position = driverPositions[driver_id];
+        var distance = Utils.findDistance(input.x, input.y, position.x, position.y);
+        var requestMappingObj = {
+          request_id: request.id,
+          driver_id: driver_id,
+          distance: distance
+        };
+        requestMapping.push(requestMappingObj);
+      }
+      var sortedDrivers = _.sortBy(requestMapping, 'distance');
+      var filteredDrivers = _.take(sortedDrivers,sails.config.params.noOfClosestDrivers);
+      return callback(null, filteredDrivers);
+    }
+
+    function createMappings(filteredDrivers, callback) {
+      RequestDriverMapping.create(filteredDrivers).exec(function (err, mappings) {
+        for(var index=0; index<mappings.length; index++) {
+          var driver_id = mappings[index].driver_id;
+          sails.io.sockets.emit('request'+driver_id, {task: 'refresh'});
+        }
+        if(!_.isEmpty(err) || _.isEmpty(mappings)) return callback(err);
+        return callback(null, mappings);
       })
     }
 
@@ -148,18 +191,19 @@ module.exports = {
     );
 
     function sanitationChecks(callback) {
-      if(input.driver_id > 5) return callback("Driver does not exist");
+      if(input.driver_id > sails.config.params.noOfDrivers) return callback("Driver does not exist");
       return callback();
     }
 
     function getRequests(callback) {
-      var requestObj = {
-        or: [
-          { driver_id: input.driver_id },
-          { status: "waiting" }
-        ]
-      };
-      Request.find(requestObj).exec(function (err, request) {
+      var requestQuery = "select distinct r.id, r.user_id, r.driver_id, r.status, r.time_started, r.time_ended, r.x, r.y, \
+        r.created_at, r.updated_at \
+        from `request` r \
+        left outer join `request_driver_mapping` rdm \
+        on r.id = rdm.request_id \
+        where (r.status = 'waiting' and rdm.driver_id = "+input.driver_id+") " +
+        "or (r.driver_id = "+input.driver_id+")";
+      Request.query(requestQuery, function (err, request) {
         if(!_.isEmpty(err)) return callback(err);
         return callback(null, request);
       })
@@ -171,7 +215,7 @@ module.exports = {
     }
 
   },
-
+  
   getAllRequests: function(input, cb) {
 
     async.waterfall([
@@ -208,7 +252,7 @@ module.exports = {
       Request.find({
         where: {
           status: 'ongoing',
-          time_started: {'<': moment().add(5,'mins').format("YYYY-MM-DD HH:mm:ss")}
+          time_started: {'<': moment().add(sails.config.params.timeToCompleteARide,'m').format("YYYY-MM-DD HH:mm:ss")}
         },
         select: ['id']
       }).exec(function (err, requests) {
@@ -223,6 +267,10 @@ module.exports = {
         status: 'complete',
         time_ended: moment().format("YYYY-MM-DD HH:mm:ss")
       }).exec(function (err, response) {
+        for(var index=0; index<response.length; index++) {
+          var driver_id = response[index].driver_id;
+          sails.io.sockets.emit('request'+driver_id, {task: 'refresh'});
+        }
         if(!_.isEmpty(err) || _.isEmpty(response)) return callback(err);
         return callback(null, _.size(requests).toString() + " Requests completed");
       })

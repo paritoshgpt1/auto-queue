@@ -2,8 +2,8 @@
  * Created by paritosh on 01/04/17.
  */
 
-autoApp.controller('DriverCtrl', ['$scope', '$rootScope', '$location', 'Factory',
-  function($scope, $rootScope, $location, Factory) {
+autoApp.controller('DriverCtrl', ['$scope', '$rootScope', '$location', 'Factory','$sails',
+  function($scope, $rootScope, $location, Factory, $sails) {
 
   $scope.driver_id = $location.search().id;
   $scope.getStatusForDriver = function () {
@@ -26,12 +26,17 @@ autoApp.controller('DriverCtrl', ['$scope', '$rootScope', '$location', 'Factory'
       });
   };
 
-    $scope.getElapsedTime = function (time) {
-      if(time){
-        return moment().from(moment(time), true);
-      }
-      return null;
-    };
+    // Watching for updates
+    var requestHandlers = $sails.on("request"+$scope.driver_id, function (message) {
+      $scope.refresh();
+    });
+
+  $scope.getElapsedTime = function (time) {
+    if(time){
+      return moment().from(moment(time), true);
+    }
+    return null;
+  };
 
   $scope.refresh = function () {
     $scope.successMessage = null;
@@ -44,7 +49,8 @@ autoApp.controller('DriverCtrl', ['$scope', '$rootScope', '$location', 'Factory'
 
   $scope.refresh();
 
-  $scope.acceptRequest = function(request_id) {
+
+    $scope.acceptRequest = function(request_id) {
     console.log(request_id);
     Factory.acceptRequest({request_id: request_id, driver_id: $scope.driver_id}).then(function(response) {
       console.log(response);

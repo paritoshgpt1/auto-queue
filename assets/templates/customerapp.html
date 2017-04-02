@@ -10,9 +10,15 @@
   <br><br><br>
   <div class="col-md-6 col-md-offset-4">
     <form>
-      <label>Customer Id: </label><br><br>
-      <input type="number" name="user_id" ng-model="user_id"/><br><br>
-      <button class="btn btn-md btn-danger" type="button" ng-click="createRequest()">RIDE NOW</button>
+      <label class="col-md-3">Customer Id: </label>
+      <input type="number" name="user_id" ng-model="user.id"/><br><br>
+      <label class="col-md-3">X: </label>
+      <input type="number" name="x" ng-model="user.x"/><br><br>
+      <label class="col-md-3">Y: </label>
+      <input type="number" name="y" ng-model="user.y"/><br><br>
+      <span class="col-md-6 text-center">
+        <button class="btn btn-md btn-danger" type="button" ng-click="createRequest()">RIDE NOW</button>
+      </span>
     </form>
   </div>
   <div ng-include src="'/templates/message.html'"></div>

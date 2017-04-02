@@ -1,6 +1,6 @@
 'use strict';
 
-var autoApp = angular.module('autoApp', ['ngRoute']);
+var autoApp = angular.module('autoApp', ['ngRoute','ngSails']);
 autoApp.config(['$routeProvider', '$locationProvider',
   function($routeProvider, $locationProvider) {
     $routeProvider.when('/driverapp', {

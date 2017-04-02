@@ -1,0 +1,30 @@
+#! /app/bin/node
+
+var http = require("https");
+
+var options = {
+  "method": "GET",
+  "hostname": "auto-queue.herokuapp.com",
+  "port": null,
+  "path": "/complete-requests",
+  "headers": {
+    "content-type": "application/json",
+    "cache-control": "no-cache",
+    "postman-token": "78c5b727-a5b1-3623-000b-e5c2db5b8d84"
+  }
+};
+
+var req = http.request(options, function (res) {
+  var chunks = [];
+
+  res.on("data", function (chunk) {
+    chunks.push(chunk);
+  });
+
+  res.on("end", function () {
+    var body = Buffer.concat(chunks);
+    console.log(body.toString());
+  });
+});
+
+req.end();

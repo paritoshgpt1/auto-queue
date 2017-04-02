@@ -28,21 +28,38 @@ module.exports.connections = {
   * Installed by default.                                                    *
   *                                                                          *
   ***************************************************************************/
-  // autoqueue: {
-  //   adapter: 'sails-mysql',
-  //   host: 'localhost',
-  //   user: 'hodor',
-  //   password: 'butterchicken',
-  //   database: 'autoqueue'
-  // },
-
   autoqueue: {
     adapter: 'sails-mysql',
-    host: 'us-cdbr-iron-east-03.cleardb.net',
-    user: 'b509d6942871c3',
-    password: 'e70322e0',
-    database: 'heroku_19f152cd94a8b72'
+    host: 'localhost',
+    user: 'hodor',
+    password: 'butterchicken',
+    database: 'autoqueue',
+    port: 3306,
+    pool: true,
+    connectionLimit: 5,
+    waitForConnections: true
   },
+
+  autoqueue_liveMysql: {
+    adapter: 'sails-mysql-live-select',
+    host: 'localhost',
+    user: 'hodor',
+    password: 'butterchicken',
+    database: 'autoqueue',
+    port: 3306,
+    minInterval: 200,
+    pool: true,
+    connectionLimit: 5,
+    waitForConnections: true
+  },
+
+  // autoqueueq: {
+  //   adapter: 'sails-mysql',
+  //   host: 'us-cdbr-iron-east-03.cleardb.net',
+  //   user: 'b509d6942871c3',
+  //   password: 'e70322e0',
+  //   database: 'heroku_19f152cd94a8b72'
+  // },
 
   /***************************************************************************
   *                                                                          *
