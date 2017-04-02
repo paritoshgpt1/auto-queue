@@ -15,7 +15,6 @@ autoApp.controller('CustomerCtrl', ['$scope', '$rootScope', '$location', 'Factor
         }
         else{
           Factory.createRequest({user_id: $scope.user.id, x: $scope.user.x, y: $scope.user.y}).then(function(response) {
-            console.log("getStatusForDriver response: ",response);
             $scope.refresh();
             if(response.status == 'success') {
               $scope.successMessage = response.data;

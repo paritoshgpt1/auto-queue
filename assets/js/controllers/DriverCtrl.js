@@ -51,9 +51,9 @@ autoApp.controller('DriverCtrl', ['$scope', '$rootScope', '$location', 'Factory'
 
 
     $scope.acceptRequest = function(request_id) {
-    console.log(request_id);
+    // console.log(request_id);
     Factory.acceptRequest({request_id: request_id, driver_id: $scope.driver_id}).then(function(response) {
-      console.log(response);
+      // console.log(response);
       $scope.refresh();
       if(response.status == 'success') {
         $scope.successMessage = response.data;
