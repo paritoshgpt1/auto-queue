@@ -116,7 +116,7 @@ module.exports = {
           sails.io.sockets.emit('request'+driver_id, {task: 'refresh'});
         }
         if(!_.isEmpty(err) || _.isEmpty(mappings)) return callback(err);
-        return callback(null, mappings);
+        return callback(null, "Please wait for your request to be accepted");
       })
     }
 
@@ -215,7 +215,7 @@ module.exports = {
     }
 
   },
-  
+
   getAllRequests: function(input, cb) {
 
     async.waterfall([
