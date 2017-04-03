@@ -12,7 +12,7 @@ autoApp.config(['$routeProvider', '$locationProvider',
     }).when('/dashboard', {
       templateUrl: '/templates/dashboard.html',
       controller: 'DashboardCtrl'
-    }).when('/dashboard', {
+    }).when('/ATriggerVerify.txt', {
       templateUrl: '/ATriggerVerify.txt'
     }).otherwise({
       redirectTo: '/',
